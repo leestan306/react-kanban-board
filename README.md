@@ -9,6 +9,10 @@ React Kanban Board is a modern and intuitive Kanban board application built with
 ## Features
 
 - **Drag-and-Drop Interface:** Easily move tasks between columns using a seamless drag-and-drop experience.
+    > - Drag and drop columns
+    > - Drag and drop tasks
+    > - Create Multiple boards
+    > - Edit / Delete Tasks and Columns
 - **Shadcn UI Components:** Utilizes Shadcn UI components for a sleek and professional user interface.
 - **TailwindCSS Integration:** Styled with TailwindCSS for rapid UI development and customization.
 - **Dark and Light Mode:** Toggle between dark and light themes to suit your preference.
