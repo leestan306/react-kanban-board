@@ -5,17 +5,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { Input } from "../ui/input";
 import { useMemo, useState } from "react";
 import Taskcard from "./TaskCard";
+import useKanban from "@/hooks/useKanban";
 function ColumnWrapper(props: ColumnProps) {
-  const {
-    column,
-    deleteColum,
-    updateColumn,
-    createTask,
-    tasks,
-    deleteTask,
-    editTask,
-  } = props;
-
+  const { column, tasks } = props;
+  const { updateColumn, createTask, deleteColumn } = useKanban();
   const [editMode, setEditMode] = useState(false);
   const {
     attributes,
@@ -83,7 +76,7 @@ function ColumnWrapper(props: ColumnProps) {
             )}
           </div>
         </div>
-        <Button variant={"destructive"} onClick={() => deleteColum(column.id)}>
+        <Button variant={"destructive"} onClick={() => deleteColumn(column.id)}>
           <FaTrashAlt />
         </Button>
       </div>
@@ -91,12 +84,7 @@ function ColumnWrapper(props: ColumnProps) {
       <div className="flex-1 flex-grow flex flex-col gap-2 overflow-x-hidden overflow-y-auto p-2">
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
-            <Taskcard
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              editTask={editTask}
-            />
+            <Taskcard key={task.id} task={task} />
           ))}
         </SortableContext>
       </div>

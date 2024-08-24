@@ -4,15 +4,9 @@ import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-function TaskCard({
-  task,
-  deleteTask,
-  editTask,
-}: {
-  task: Task;
-  deleteTask: (id: Id) => void;
-  editTask: (id: Id, content: string) => void;
-}) {
+import useKanban from "@/hooks/useKanban";
+function TaskCard({ task }: { task: Task }) {
+  const { deleteTask, editTask } = useKanban();
   const [editMode, setEditMode] = useState(false);
   const {
     attributes,

@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa";
-import { generateId } from "@/lib/utils";
+
 import {
   DndContext,
   DragEndEvent,
@@ -14,62 +14,25 @@ import {
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import ColumnWrapper from "./ColumnWrapper";
 import Taskcard from "./TaskCard";
-import { columnsPredata, tasksPreData } from "@/lib/constants/_data";
-import useLocalStorage from "@/hooks/useStorageHook";
+
+import SideBar from "./SideBar";
+import useKanban from "@/hooks/useKanban";
 
 function KanbanBoard() {
-  const [columns, setColumns] = useLocalStorage<Column[]>(
-    "columns",
-    columnsPredata
-  );
-  const [tasks, setTasks] = useLocalStorage<Task[]>("tasks", tasksPreData);
-  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-  const [activeCard, setActiveCard] = useState<Task | null>(null);
+  const {
+    tasks,
+    columns,
+    setActiveColumn,
+    setActiveCard,
 
-  const createTask = (columnId: Id) => {
-    const taskToAdd: Task = {
-      id: generateId(),
-      content: `Task ${tasks.length + 1}`,
-      columnId,
-    };
-    setTasks([...tasks, taskToAdd]);
-  };
-  const deleteTask = (id: Id) => {
-    const filteredTasks = tasks.filter((task) => task.id !== id);
-    setTasks(filteredTasks);
-  };
+    activeCard,
+    activeColumn,
+    createColumn,
 
-  const editTask = (id: Id, content: string) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, content };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
-  };
+    setTasks,
+    setColumns,
+  } = useKanban();
 
-  const createNewColumn = () => {
-    const columnToAdd: Column = {
-      title: `Column ${columns.length + 1}`,
-      id: generateId(),
-    };
-    setColumns([...columns, columnToAdd]);
-  };
-  const deleteColumn = (id: Id) => {
-    const filteredColumns = columns.filter((column) => column.id !== id);
-    setColumns(filteredColumns);
-  };
-
-  const updateColumn = (id: Id, title: string) => {
-    const updatedColumns = columns.map((column) => {
-      if (column.id === id) {
-        return { ...column, title };
-      }
-      return column;
-    });
-    setColumns(updatedColumns);
-  };
   const columnsIds = useMemo(
     () => columns.map((column) => column.id),
     [columns]
@@ -155,52 +118,39 @@ function KanbanBoard() {
       onDragEnd={onDragEnd}
       sensors={sesnsors}
     >
-      <div className="m-auto flex min-h-[calc(100vh-64px)] w-full items-center overflow-x-auto overflow-y-hidden px-[40px]">
-        <div className="mx-auto flex gap-2">
-          <div className="flex gap-2">
-            <SortableContext items={columnsIds}>
-              {columns.map((column) => (
-                <ColumnWrapper
-                  editTask={editTask}
-                  deleteTask={deleteTask}
-                  createTask={createTask}
-                  key={column.id}
-                  column={column}
-                  deleteColum={deleteColumn}
-                  updateColumn={updateColumn}
-                  tasks={tasks.filter((task) => task.columnId === column.id)}
-                />
-              ))}
-            </SortableContext>
+      <div className="flex">
+        <SideBar />
+        <div className="m-auto flex min-h-[calc(100vh)] w-full items-center overflow-x-auto overflow-y-hidden px-[40px] flex-1 flex-grow">
+          <div className="mx-auto flex gap-2">
+            <div className="flex gap-2">
+              <SortableContext items={columnsIds}>
+                {columns.map((column) => (
+                  <ColumnWrapper
+                    key={column.id}
+                    column={column}
+                    tasks={tasks.filter((task) => task.columnId === column.id)}
+                  />
+                ))}
+              </SortableContext>
+            </div>
+            <Button
+              className="gap-4 w-[350px] border-4 p-6"
+              onClick={() => createColumn()}
+              variant={"outline"}
+            >
+              Add Column <FaPlus />{" "}
+            </Button>
           </div>
-          <Button
-            className="gap-4 w-[350px] border-4 p-6"
-            onClick={createNewColumn}
-            variant={"outline"}
-          >
-            Add Column <FaPlus />{" "}
-          </Button>
         </div>
       </div>
       <DragOverlay>
         {activeColumn && (
           <ColumnWrapper
-            editTask={editTask}
-            deleteTask={deleteTask}
-            createTask={createTask}
             column={activeColumn}
-            deleteColum={deleteColumn}
-            updateColumn={updateColumn}
             tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
           />
         )}
-        {activeCard && (
-          <Taskcard
-            task={activeCard}
-            deleteTask={deleteTask}
-            editTask={editTask}
-          />
-        )}
+        {activeCard && <Taskcard task={activeCard} />}
       </DragOverlay>
     </DndContext>
   );

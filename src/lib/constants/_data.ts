@@ -1,10 +1,15 @@
+const boardsPreData: Board[] = [
+  { id: 9991, title: "Work" },
+  { id: 2888, title: "Personal" },
+];
+
 const columnsPredata: Column[] = [
-  { id: 1, title: "Uncategorized" },
-  { id: 2, title: "To Do" },
-  { id: 3, title: "In Progress" },
-  { id: 7, title: "Finished" },
-  { id: 4, title: "Reviewing" },
-  { id: 5, title: "Done" },
+  { id: 1, boardId: 9991, title: "Uncategorized" },
+  { id: 2, boardId: 9991, title: "To Do" },
+  { id: 3, boardId: 9991, title: "In Progress" },
+  { id: 7, boardId: 9991, title: "Finished" },
+  { id: 4, boardId: 9991, title: "Reviewing" },
+  { id: 5, boardId: 9991, title: "Done" },
 ];
 
 const tasksPreData: Task[] = [
@@ -82,4 +87,4 @@ const tasksPreData: Task[] = [
   { id: 1943, columnId: 5, content: "Launch the new company website" },
   { id: 2034, columnId: 5, content: "Deliver the product demo to the client" },
 ];
-export { columnsPredata, tasksPreData };
+export { columnsPredata, tasksPreData, boardsPreData };
