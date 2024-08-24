@@ -4,10 +4,10 @@ import { ModeToggle } from "./components/mode-toggle";
 function App() {
   return (
     <div>
-      <div className="flex justify-end p-4">
+      <div className="fixed top-4 right-4">
         <ModeToggle />
       </div>
-      <KanbanBoard />;
+      <KanbanBoard />
     </div>
   );
 }
