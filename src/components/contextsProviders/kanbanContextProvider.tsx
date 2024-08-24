@@ -26,7 +26,7 @@ export const KabanContextProvider = ({
   const [activeCard, setActiveCard] = useState<Task | null>(null);
   const [activeBoard, setActiveBoard] = useLocalStorage<Board | null>(
     "activeBoard",
-    null
+    boards[0] || null
   );
 
   const createBoard = () => {
@@ -35,6 +35,7 @@ export const KabanContextProvider = ({
       id: generateId(),
     };
     setBoards([...boards, boardToAdd]);
+    setActiveBoard(boardToAdd);
   };
 
   const deleteBoard = (id: Id) => {
