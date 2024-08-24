@@ -34,6 +34,17 @@ function BoardListItem({ board }: { board: Board }) {
         <Button
           className="hidden group-hover:inline-flex"
           size={"icon"}
+          variant={"outline"}
+          onClick={(e) => {
+            e.stopPropagation();
+            setEditMode(true);
+          }}
+        >
+          <FaEdit />
+        </Button>
+        <Button
+          className="hidden group-hover:inline-flex"
+          size={"icon"}
           onClick={(e) => {
             e.stopPropagation();
             deleteBoard(board.id);
@@ -41,16 +52,6 @@ function BoardListItem({ board }: { board: Board }) {
           variant={"destructive"}
         >
           <FaTrashAlt />
-        </Button>
-        <Button
-          className="hidden group-hover:inline-flex"
-          size={"icon"}
-          onClick={(e) => {
-            e.stopPropagation();
-            setEditMode(true);
-          }}
-        >
-          <FaEdit />
         </Button>
       </div>
     </Card>

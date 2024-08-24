@@ -30,6 +30,7 @@ type KanbanContextType = {
   activeColumn: Column | null;
   setActiveColumn: React.Dispatch<React.SetStateAction<Column | null>>;
   setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+  arrayMoveColumns: (from: number, to: number) => void;
 
   createTask: (columnId: Id) => void;
   tasks: Task[];
@@ -38,6 +39,7 @@ type KanbanContextType = {
   activeCard: Task | null;
   setActiveCard: React.Dispatch<React.SetStateAction<Task | null>>;
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  arrayMoveTasks: (from: number, to: number) => void;
 
   boards: Board[];
   createBoard: () => void;

@@ -7,6 +7,7 @@ import {
 } from "@/lib/constants/_data";
 import { generateId } from "@/lib/utils";
 import useLocalStorage from "@/hooks/useStorageHook";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export const KanbanContext = React.createContext<KanbanContextType | null>(
   null
@@ -102,11 +103,22 @@ export const KabanContextProvider = ({
     });
     setColumns(updatedColumns);
   };
+  const arrayMoveColumns = (start: number, to: number) => {
+    setColumns((columns) => {
+      return arrayMove(columns, start, to);
+    });
+  };
+
+  const arrayMoveTasks = (start: number, to: number) => {
+    setTasks((tasks) => {
+      return arrayMove(tasks, start, to);
+    });
+  };
 
   return (
     <KanbanContext.Provider
       value={{
-        columns: columns.filter((column) => column.boardId === activeBoard?.id),
+        columns,
         updateColumn,
         deleteColumn,
         createColumn,
@@ -129,6 +141,9 @@ export const KabanContextProvider = ({
         activeBoard,
         setActiveBoard,
         setBoards,
+
+        arrayMoveColumns,
+        arrayMoveTasks,
       }}
     >
       {children}

@@ -11,7 +11,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import ColumnWrapper from "./ColumnWrapper";
 import Taskcard from "./TaskCard";
 
@@ -29,14 +29,11 @@ function KanbanBoard() {
     activeColumn,
     createColumn,
 
-    setTasks,
-    setColumns,
-  } = useKanban();
+    arrayMoveColumns,
+    arrayMoveTasks,
 
-  const columnsIds = useMemo(
-    () => columns.map((column) => column.id),
-    [columns]
-  );
+    activeBoard,
+  } = useKanban();
 
   const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "Column") {
@@ -70,9 +67,9 @@ function KanbanBoard() {
       const overColumnIndex = columns.findIndex(
         (column) => column.id === overColumnId
       );
-      setColumns((columns) => {
-        return arrayMove(columns, activeColumnIndex, overColumnIndex);
-      });
+
+      arrayMoveColumns(activeColumnIndex, overColumnIndex);
+
       return;
     }
 
@@ -90,9 +87,9 @@ function KanbanBoard() {
       const activeTask = tasks[activeCardIndex];
       const overTask = tasks[overCardIndex];
       activeTask.columnId = overTask.columnId;
-      setTasks((tasks) => {
-        return arrayMove(tasks, activeCardIndex, overCardIndex);
-      });
+
+      arrayMoveTasks(activeCardIndex, overCardIndex);
+
       return;
     }
     if (overColumnId && activeCardId) {
@@ -111,7 +108,14 @@ function KanbanBoard() {
       },
     })
   );
-
+  const activeColumns = useMemo(
+    () => columns.filter((column) => column.boardId === activeBoard?.id),
+    [columns, activeBoard]
+  );
+  const columnsIds = useMemo(
+    () => activeColumns.map((column) => column.id),
+    [activeColumns]
+  );
   return (
     <DndContext
       onDragStart={onDragStart}
@@ -124,7 +128,7 @@ function KanbanBoard() {
           <div className="mx-auto flex gap-2">
             <div className="flex gap-2">
               <SortableContext items={columnsIds}>
-                {columns.map((column) => (
+                {activeColumns.map((column) => (
                   <ColumnWrapper
                     key={column.id}
                     column={column}
