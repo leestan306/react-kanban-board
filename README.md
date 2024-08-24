@@ -25,7 +25,7 @@ React Kanban Board is a modern and intuitive Kanban board application built with
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/react-kanban-board.git
+    git clone https://github.com/leestan306/react-kanban-board.git
     cd react-kanban-board
     ```
 
