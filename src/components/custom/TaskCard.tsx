@@ -56,16 +56,21 @@ function TaskCard({ task }: { task: Task }) {
           </div>
         )}
         {editMode && (
-          <Textarea
-            className="w-full"
-            value={task.content}
-            onChange={(e) => editTask(task.id, e.target.value)}
-            onBlur={() => setEditMode(false)}
-            autoFocus
-            onKeyDown={(e) =>
-              e.key === "Enter" && e.shiftKey && setEditMode(false)
-            }
-          ></Textarea>
+          <div className="w-full">
+            <Textarea
+              className="w-full"
+              value={task.content}
+              onChange={(e) => editTask(task.id, e.target.value)}
+              onBlur={() => setEditMode(false)}
+              autoFocus
+              onKeyDown={(e) =>
+                e.key === "Enter" && e.shiftKey && setEditMode(false)
+              }
+            ></Textarea>
+            <small className="text-primary/60 text-xs mt-1 text-center w-full">
+              Shift & Enter to save
+            </small>
+          </div>
         )}
       </div>
       {!editMode && (
